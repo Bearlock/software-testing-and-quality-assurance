@@ -1,0 +1,30 @@
+# Scalene
+4 2 3
+# Isocoles
+9 8 8
+# Isocoles
+14 14 21
+# Isocoles
+11 2 11
+# Equalateral
+199 199 199
+# Not a tirangle
+1 0 4
+# Not a tirangle
+2 2 0
+# Not a tirangle
+0 0 0
+# Not a tirangle
+5 -1 2
+# Not a tirangle
+5 6 11
+# Not a tirangle
+5 7 14
+# Not a tirangle
+4 23 19
+# Not a tirangle
+4 23 18
+# Not a tirangle
+5 1 4
+# Not a tirangle
+5 2 2
