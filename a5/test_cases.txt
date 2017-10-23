@@ -1,5 +1,17 @@
+# Test cases, cyclomatic complexity, and description
+#
+#
 # Cyclomatic complexity is 9; calculated by number of predicates (8) + 1
 #
+# The test cases below are generated from the included flow graph. In order to do
+# so, I had to first find a baseline path (a path that would take me through most
+# of the edges/nodes on the graph). This is reflected through test case 7. Then,
+# I would start to deviate from the decisions made in test case 7 one at a time.
+# Test cases 8 and 9 immediately apparent deviations most local to test case 7
+# all I did was slightly adjust my triangle sidelengths. Test cases 4, 5 and 6 are
+# deviations that happen higher on the flow graph. Test 2 is one of the bigger
+# deviations; if the line being processed is a comment, the program will not
+# execute the majority of the flow graph/decision chain.
 #
 # Test 1: While there are lines to read, process lines. Should print/process this document
 # Process this document!
@@ -17,7 +29,7 @@
 0 0 0
 #
 #
-# Test 5: If vector doesn't have have 3 sides (in this case [0, 0, 0, 0, 0]), it should print "not a triangle" string
+# Test 5: If vector doesn't have 3 sides (in this case [0, 0, 0, 0, 0]), it should print "not a triangle" string
 0 0 0 0 0
 #
 #
