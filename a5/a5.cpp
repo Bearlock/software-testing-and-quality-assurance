@@ -36,7 +36,7 @@ bool fufillsTriangleInequality(vector<int> sides) {
 
 // Returns true if all conditions above are fulfilled
 bool isTriangle(vector<int> sides) {
-  return isValidLength(sides) && hasValidSides(sides) && fufillsTriangleInequality(sides);
+  return hasValidSides(sides) && isValidLength(sides) && fufillsTriangleInequality(sides);
 }
 
 // Returns true if 2 sides are the same
@@ -83,7 +83,6 @@ vector<int> createSortedTriangle(string fileText) {
   while(fileTextStream >> side) {
     sides.push_back(side);
   }
-
   sort(sides.begin(), sides.end());
   return sides;
 }
@@ -108,12 +107,12 @@ string calculateTriangleType(vector<int> triangle) {
     return printTriangle(triangleString(triangle), "scalene!");
   }
 
-  return printTriangle(triangleString(triangle), "not a triangle");
+  return printTriangle("on this line", "not a triangle");
 }
 
 // Processes the passed in file line by line; determines if a line is a comment or triangle
 // If comment, prints it out. Otherwise it will sort/push values into a vector and calculate
-// The corresponding triangle type; prints out the string. 
+// The corresponding triangle type; prints out the string.
 void processTriangle(ifstream& triangleFile) {
   string fileText;
 
@@ -125,7 +124,7 @@ void processTriangle(ifstream& triangleFile) {
     }
     else {
       triangle = createSortedTriangle(fileText);
-      cout << calculateTriangleType(triangle) << '\n' << endl;
+      cout << calculateTriangleType(triangle) << endl;
     }
   }
 }
@@ -144,6 +143,7 @@ int main(int argc, char* argv[]) {
     triangleFile.open(fileName);
   }
 
+  cout << "\n\n" << endl;
   processTriangle(triangleFile);
   triangleFile.close();
 

@@ -1,0 +1,39 @@
+# Cyclomatic complexity is 9; calculated by number of predicates (8) + 1
+#
+#
+# Test 1: While there are lines to read, process lines. Should print/process this document
+# Process this document!
+#
+#
+# Test 2: Testing if something is a comment, should print out the comment
+# Print this comment!
+#
+#
+# Test 3: While there are numbers (in this case [8, 6, 7, 5309]), it should push numbers onto vector (in this case it'll print not a triangle)
+8 6 7 5309
+#
+#
+# Test 4: If vector doesn't have valid sides (in this case [0, 0, 0]), it should print "not a triangle" string
+0 0 0
+#
+#
+# Test 5: If vector doesn't have have 3 sides (in this case [0, 0, 0, 0, 0]), it should print "not a triangle" string
+0 0 0 0 0
+#
+#
+# Test 6: If vector doesn't fulfill triangle inequality (in this case [3, 3, 9]), it should print "not a triangle" string
+3 3 9
+#
+#
+# Test 7: If triangle is equilateral, should print equilateral string
+6 6 6
+#
+#
+# Test 8: If triangle is isosceles, should print isosceles string
+6 6 9
+#
+#
+# Test 9: If triangle isn't isosceles or equilateral, should print "scalene" string
+3 4 5
+#
+#
