@@ -1,0 +1,5 @@
+Browsers	Host OS	Speed	Web Server	Application Server	Database Server	Server OS
+Google Chrome	Ubuntu	Slow	nginx	Glass Fish	MySQL	Microsoft Server 2008
+Firefox	MacOS	Medium	Apache	Jboss	PostgreSQL	CentOS
+Microsoft Edge	Windows 10	Fast	HAProxy	Apache Tomcat	Mariadb	Red Hat Enterprise Linux
+				Oracle Weblogic	Mongodb	SUSE Linux Enterprise Server

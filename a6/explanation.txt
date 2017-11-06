@@ -1,0 +1,3 @@
+Allpairs produces a set of test cases that guarantee that each value of each parameter is paired in at least one case. 
+Instead of providing each combination (which can get prohibitively large) it pares down the tests cases to a minimum viable set. 
+The first part of the output is the test cases, the 'parirings' column shows the number of unique pairings found; the second part shows how pairings were done. 
