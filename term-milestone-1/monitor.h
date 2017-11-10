@@ -52,7 +52,6 @@ class Monitor {
     void invalidateOxygen();
     void missedOxygenRead();
 
-    bool isNumber(const std::string&);
     double calculateAverage(std::deque<double>);
 
     std::pair<int, int> parseBp(std::string, char);

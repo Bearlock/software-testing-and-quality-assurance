@@ -62,13 +62,12 @@ std::pair<int, int> Monitor::parseBp(std::string parsedString, char delim) {
 
   std::getline(potentialBp, sys, delim);
   std::getline(potentialBp, dia, delim);
-
-  if(!isNumber(sys) || !isNumber(dia)) {
-    setStatus("low", "Equipment malfunction", "pulse");
-    missedOxygenRead();
-    return std::make_pair(-117, -117);
+  try {
+    return std::make_pair(stoi(sys), stoi(dia));
   }
-  return std::make_pair(stoi(sys), stoi(dia));
+  catch(std::invalid_argument&) {
+    throw;
+  }
 }
 
 void Monitor::setStatus(std::string alertLevel, std::string desc, std::string source) {
@@ -221,12 +220,6 @@ void Monitor::checkBp(std::pair<int, int> readBp) {
   }
 }
 
-bool Monitor::isNumber(const std::string& s) {
-  std::string::const_iterator it = s.begin();
-  while (it != s.end() && std::isdigit(*it)) it++;
-  return !s.empty() && it == s.end();
-}
-
 void Monitor::processLine(std::string input) {
   incrementTime(TIME_INCREMENT);
 
@@ -239,16 +232,17 @@ void Monitor::processLine(std::string input) {
   }
 
   if(parsedInput.size() == 3) {
-    if(!isNumber(parsedInput[0]) && !isNumber(parsedInput[1])) {
+    try {
+      pulse = stoi(parsedInput[0]);
+      oxygen = stod(parsedInput[1]);
+      bp = parseBp(parsedInput[2], '/');
+    }
+    catch(std::invalid_argument&) {
       setStatus("low", "Equipment malfunction", "pulse");
       missedOxygenRead();
       printStatus();
       return;
     }
-
-    pulse = stoi(parsedInput[0]);
-    oxygen = stod(parsedInput[1]);
-    bp = parseBp(parsedInput[2], '/');
 
     missedOxygen = 0;
 
@@ -263,15 +257,16 @@ void Monitor::processLine(std::string input) {
 
     if(found != std::string::npos) {
       // we got bp
-      if(!isNumber(parsedInput[0])) {
+      try {
+        pulse = stoi(parsedInput[0]);
+        bp = parseBp(parsedInput[1], delimiter);
+      }
+      catch(std::invalid_argument&) {
         setStatus("low", "Equipment malfunction", "pulse");
         missedOxygenRead();
         printStatus();
         return;
       }
-
-      pulse = stoi(parsedInput[0]);
-      bp = parseBp(parsedInput[1], delimiter);
 
       checkPulse(pulse);
       checkBp(bp);
@@ -279,15 +274,16 @@ void Monitor::processLine(std::string input) {
     }
     else {
       // we got oxygen
-      if(!isNumber(parsedInput[0]) && !isNumber(parsedInput[1])) {
+      try {
+        pulse = stoi(parsedInput[0]);
+        oxygen = stod(parsedInput[1]);
+      }
+      catch(std::invalid_argument&) {
         setStatus("low", "Equipment malfunction", "pulse");
         missedOxygenRead();
         printStatus();
         return;
       }
-
-      pulse = stoi(parsedInput[0]);
-      oxygen = stod(parsedInput[1]);
 
       missedOxygen = 0;
       checkPulse(pulse);
@@ -296,16 +292,18 @@ void Monitor::processLine(std::string input) {
   }
   else if (parsedInput.size() == 1){
     // we're only getting a pulse
-    if(!isNumber(parsedInput[0])) {
+    try {
+      pulse = stoi(parsedInput[0]);
+    }
+    catch(std::invalid_argument&) {
       setStatus("low", "Equipment malfunction", "pulse");
       missedOxygenRead();
       printStatus();
       return;
     }
 
-    pulse = stoi(parsedInput[0]);
-    checkPulse(pulse);
     missedOxygenRead();
+    checkPulse(pulse);
   }
   else {
     // If parsedInput.size() isn't between 1 and 3, there is an error
