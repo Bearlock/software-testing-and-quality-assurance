@@ -12,6 +12,8 @@ int main(int argc, char* argv[]) {
   Monitor healthMonitor;
   string inputText;
 
+  cout << endl;
+
   if(argc > 1) {
     ifstream monitorFile;
     monitorFile.open(argv[1]);
@@ -23,13 +25,14 @@ int main(int argc, char* argv[]) {
     else {
       // Good file read
       while(getline(monitorFile, inputText)) {
+        cout << inputText << endl;
         healthMonitor.processLine(inputText);
       }
     }
   }
   else {
     // No file, assume CLI input
-    cout << "Welcome to a health monitoring program. Please enter vitals: ";
+    cout << "Welcome to a health monitoring program. Please enter vitals: " << endl;
     while(getline(cin, inputText)) {
       healthMonitor.processLine(inputText);
     }

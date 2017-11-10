@@ -10,19 +10,19 @@ class Monitor {
   public:
     Monitor();
 
-    const int PULSE_MIN = 0;
-    const int PULSE_MAX = 210;
-    const std::array<std::pair<int, std::string>, 5> PULSE_ALARM_VALS = {{std::make_pair(20, "high"), std::make_pair(170, "high"), std::make_pair(40, "medium"), std::make_pair(130, "medium"), std::make_pair(110, "low")}};
+    static const int PULSE_MIN;
+    static const int PULSE_MAX;
+    static const std::array<std::pair<int, std::string>, 5> PULSE_ALARM_VALS;
 
-    const double OXYGEN_MIN = 0;
-    const double OXYGEN_MAX = 99.9;
-    const std::array<std::pair<double, std::string>, 3>OXYGEN_ALARM_VALS = {{std::make_pair(50.0, "high"), std::make_pair(80.0, "medium"), std::make_pair(85.0, "low")}};
+    static const double OXYGEN_MIN;
+    static const double OXYGEN_MAX;
+    static const std::array<std::pair<double, std::string>, 3> OXYGEN_ALARM_VALS;
 
-    const std::pair<int, int> BP_MAX = std::make_pair(230,150);
-    const std::array<std::pair<std::pair<int, int>, std::string>, 4> BP_ALARM_VALS = {std::make_pair(std::make_pair(50, 33), "high"), std::make_pair(std::make_pair(200, 120), "medium"), std::make_pair(std::make_pair(70, 40), "medium"), std::make_pair(std::make_pair(150, 90), "low")};
+    static const std::pair<int, int> BP_MAX;
+    static const std::array<std::pair<std::pair<int, int>, std::string>, 4> BP_ALARM_VALS;
 
-    const int MAX_TIME = 60;
-    const int TIME_INCREMENT = 10;
+    static const int MAX_TIME;
+    static const int TIME_INCREMENT;
 
     int minutes;
     int seconds;
@@ -52,6 +52,7 @@ class Monitor {
     void invalidateOxygen();
     void missedOxygenRead();
 
+    bool isNumber(const std::string&);
     double calculateAverage(std::deque<double>);
 
     std::pair<int, int> parseBp(std::string, char);
