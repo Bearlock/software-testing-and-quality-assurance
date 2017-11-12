@@ -38,7 +38,7 @@ void Monitor::incrementTime(int incrementBy) {
 }
 
 void Monitor::printStatus() {
-  std::cout << std::setw(2) << std::setfill('0') << minutes << ':' << std::setw(2) << std::setfill('0') << seconds <<  '\t' << currentStatus << '\t' << description << '\t' << calculateAverage(oxygenReads) << '\n' << std::endl;
+  std::cout << std::setw(2) << std::setfill('0') << minutes << ':' << std::setw(2) << std::setfill('0') << seconds <<  '\t' << currentStatus << '\t' << description << '\t' << std::setprecision(1) << std::fixed << calculateAverage(oxygenReads) << '\n' << std::endl;
 }
 
 void Monitor::invalidateOxygen() {
@@ -71,7 +71,6 @@ std::pair<int, int> Monitor::parseBp(std::string parsedString, char delim) {
 }
 
 void Monitor::setStatus(std::string alertLevel, std::string desc, std::string source) {
-
   if(alertLevel == "none") {
     if (source == "pulse") {
       pulseAlarm = false;
@@ -88,16 +87,55 @@ void Monitor::setStatus(std::string alertLevel, std::string desc, std::string so
   }
   else {
     if (source == "pulse") {
-      pulseAlarm = true;
-      warnings[0] = std::make_pair(alertLevel, desc);
+      if(alertLevel == "high") {
+        pulseAlarm = true;
+        warnings[0] = std::make_pair(alertLevel, desc);
+      }
+      else if(alertLevel == "medium" && warnings[0].first != "high")
+      {
+        pulseAlarm = true;
+        warnings[0] = std::make_pair(alertLevel, desc);
+      }
+      else {
+        if (warnings[0].first != "high" || warnings[0].first != "medium") {
+          pulseAlarm = true;
+          warnings[0] = std::make_pair(alertLevel, desc);
+        }
+      }
     }
     else if (source == "oxygen") {
-      oxygenAlarm = true;
-      warnings[1] = std::make_pair(alertLevel, desc);
+      if(alertLevel == "high") {
+        oxygenAlarm = true;
+        warnings[1] = std::make_pair(alertLevel, desc);
+      }
+      else if(alertLevel == "medium" && warnings[1].first != "high")
+      {
+        oxygenAlarm = true;
+        warnings[1] = std::make_pair(alertLevel, desc);
+      }
+      else {
+        if (warnings[1].first != "high" || warnings[1].first != "medium") {
+          oxygenAlarm = true;
+          warnings[1] = std::make_pair(alertLevel, desc);
+        }
+      }
     }
     else {
-      bpAlarm = true;
-      warnings[2] = std::make_pair(alertLevel, desc);
+      if(alertLevel == "high") {
+        bpAlarm = true;
+        warnings[2] = std::make_pair(alertLevel, desc);
+      }
+      else if(alertLevel == "medium" && warnings[2].first != "high")
+      {
+        bpAlarm = true;
+        warnings[2] = std::make_pair(alertLevel, desc);
+      }
+      else {
+        if (warnings[2].first != "high" || warnings[2].first != "medium") {
+          bpAlarm = true;
+          warnings[2] = std::make_pair(alertLevel, desc);
+        }
+      }
     }
   }
 
@@ -152,44 +190,55 @@ void Monitor::checkPulse(int readPulse) {
 
 void Monitor::missedOxygenRead() {
   missedOxygen++;
-  if (missedOxygen >= 3) {
+  if (missedOxygen > 2) {
     invalidateOxygen();
   }
   else {
-    checkOxygen(oxygenReads.back());
+    if (oxygenReads.size() < 6 && oxygenReads.size() > 0) {
+      oxygenReads.push_back(oxygenReads.back());
+    }
+    else {
+      oxygenReads.pop_front();
+      oxygenReads.push_back(oxygenReads.back());
+      setOxygenLevel(calculateAverage(oxygenReads));
+    }
+  }
+}
+
+void Monitor::setOxygenLevel(double oxygenAverage) {
+  if(oxygenAverage < OXYGEN_ALARM_VALS[0].first) {
+    setStatus(OXYGEN_ALARM_VALS[0].second, "Oxygen is life threatingly low!", "oxygen");
+  }
+  else if(oxygenAverage < OXYGEN_ALARM_VALS[1].first) {
+    setStatus(OXYGEN_ALARM_VALS[1].second, "Oxygen is dangerously low!", "oxygen");
+  }
+  else if (oxygenAverage < OXYGEN_ALARM_VALS[2].first) {
+    setStatus(OXYGEN_ALARM_VALS[2].second, "Oxygen is potentially too low", "oxygen");
+  }
+  else {
+    setStatus("none", "Everything is normal", "oxygen");
   }
 }
 
 void Monitor::checkOxygen(double readOxygen) {
   if(oxygenReads.size() < 6) {
-    if(readOxygen > OXYGEN_MIN && readOxygen < OXYGEN_MAX) {
+    if(readOxygen >= OXYGEN_MIN && readOxygen <= OXYGEN_MAX) {
+      missedOxygen = 0;
       oxygenReads.push_back(readOxygen);
-    }
-    else {
-      setStatus("low", "Equipment malfunction", "oxygen");
-    }
-  }
-  else if (readOxygen >= OXYGEN_MIN && readOxygen <= OXYGEN_MAX) {;
-    oxygenReads.pop_front();
-    oxygenReads.push_back(readOxygen);
-    double oxygenAverage = calculateAverage(oxygenReads);
-
-    if(oxygenAverage < OXYGEN_ALARM_VALS[0].first) {
-      setStatus(OXYGEN_ALARM_VALS[0].second, "Oxygen is life threatingly low!", "oxygen");
-    }
-    else if(oxygenAverage < OXYGEN_ALARM_VALS[1].first) {
-      setStatus(OXYGEN_ALARM_VALS[1].second, "Oxygen is dangerously low!", "oxygen");
-    }
-    else if (oxygenAverage < OXYGEN_ALARM_VALS[2].first) {
-      setStatus(OXYGEN_ALARM_VALS[2].second, "Oxygen is potentially too low", "oxygen");
-    }
-    else {
       setStatus("none", "Everything is normal", "oxygen");
     }
+    else {
+      invalidateOxygen();
+    }
+  }
+  else if (readOxygen >= OXYGEN_MIN && readOxygen <= OXYGEN_MAX) {
+    missedOxygen = 0;
+    oxygenReads.pop_front();
+    oxygenReads.push_back(readOxygen);
+    setOxygenLevel(calculateAverage(oxygenReads));
   }
   else {
-    missedOxygenRead();
-    setStatus("low", "Equipment malfunction", "oxygen");
+    invalidateOxygen();
   }
 }
 
@@ -240,14 +289,12 @@ void Monitor::processLine(std::string input) {
     }
     catch(std::invalid_argument&) {
       setStatus("low", "Equipment malfunction", "pulse");
-      missedOxygenRead();
+      invalidateOxygen();
       printStatus();
       previousStatus = currentStatus;
       currentStatus = "none";
       return;
     }
-
-    missedOxygen = 0;
 
     checkPulse(pulse);
     checkOxygen(oxygen);
@@ -266,7 +313,7 @@ void Monitor::processLine(std::string input) {
       }
       catch(std::invalid_argument&) {
         setStatus("low", "Equipment malfunction", "pulse");
-        missedOxygenRead();
+        invalidateOxygen();
         printStatus();
         previousStatus = currentStatus;
         currentStatus = "none";
@@ -285,14 +332,13 @@ void Monitor::processLine(std::string input) {
       }
       catch(std::invalid_argument&) {
         setStatus("low", "Equipment malfunction", "pulse");
-        missedOxygenRead();
+        invalidateOxygen();
         printStatus();
         previousStatus = currentStatus;
         currentStatus = "none";
         return;
       }
 
-      missedOxygen = 0;
       checkPulse(pulse);
       checkOxygen(oxygen);
     }
@@ -304,7 +350,7 @@ void Monitor::processLine(std::string input) {
     }
     catch(std::invalid_argument&) {
       setStatus("low", "Equipment malfunction", "pulse");
-      missedOxygenRead();
+      invalidateOxygen();
       printStatus();
       previousStatus = currentStatus;
       currentStatus = "none";

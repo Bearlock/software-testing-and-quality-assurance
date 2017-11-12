@@ -49,6 +49,7 @@ class Monitor {
     void processLine(std::string);
     void checkPulse(int);
     void checkOxygen(double);
+    void setOxygenLevel(double);
     void checkBp(std::pair<int, int>);
     void invalidateOxygen();
     void missedOxygenRead();
