@@ -38,7 +38,8 @@ class Monitor {
     std::pair<int, int> bp;
 
     std::string description;
-    std::string alertStatus;
+    std::string currentStatus;
+    std::string previousStatus;
     std::deque<double> oxygenReads;
     std::array<std::pair<std::string, std::string>, 3> warnings;
 

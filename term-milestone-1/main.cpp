@@ -26,7 +26,13 @@ int main(int argc, char* argv[]) {
       // Good file read
       while(getline(monitorFile, inputText)) {
         cout << inputText << endl;
-        healthMonitor.processLine(inputText);
+        if(inputText[0] != '#') {
+          healthMonitor.processLine(inputText);
+        }
+        else {
+          // if the string doesn't start with #, process it,
+          // otherwise its a comment
+        }
       }
     }
   }
