@@ -38,7 +38,7 @@ void Monitor::incrementTime(int incrementBy) {
 }
 
 void Monitor::printStatus() {
-  std::cout << std::setw(2) << std::setfill('0') << minutes << ':' << std::setw(2) << std::setfill('0') << seconds <<  '\t' << currentStatus << '\t' << description << '\t' << std::setprecision(1) << std::fixed << calculateAverage(oxygenReads) << '\n' << std::endl;
+  std::cout << std::setw(2) << std::setfill('0') << minutes << ':' << std::setw(2) << std::setfill('0') << seconds <<  '\t' << currentStatus << '\t' << description << '\n' << std::endl;
 }
 
 void Monitor::invalidateOxygen() {
@@ -164,19 +164,19 @@ void Monitor::setStatus(std::string alertLevel, std::string desc, std::string so
 void Monitor::checkPulse(int readPulse) {
   if(readPulse >= PULSE_MIN && readPulse <= PULSE_MAX) {
     if(readPulse < PULSE_ALARM_VALS[0].first) {
-      setStatus(PULSE_ALARM_VALS[0].second, "Pulse is life threatingly low!", "pulse");
+      setStatus(PULSE_ALARM_VALS[0].second, "Pulse is life threateningly low: " + std::to_string(readPulse), "pulse");
     }
     else if(readPulse > PULSE_ALARM_VALS[1].first) {
-      setStatus(PULSE_ALARM_VALS[1].second, "Pulse is life threatingly high!", "pulse");
+      setStatus(PULSE_ALARM_VALS[1].second, "Pulse is life threateningly high: " + std::to_string(readPulse), "pulse");
     }
     else if (readPulse < PULSE_ALARM_VALS[2].first) {
-      setStatus(PULSE_ALARM_VALS[2].second, "Pulse is dangerously low!", "pulse");
+      setStatus(PULSE_ALARM_VALS[2].second, "Pulse is dangerously low: " + std::to_string(readPulse), "pulse");
     }
     else if(readPulse > PULSE_ALARM_VALS[3].first) {
-      setStatus(PULSE_ALARM_VALS[3].second, "Pulse is dangerously high!", "pulse");
+      setStatus(PULSE_ALARM_VALS[3].second, "Pulse is dangerously high: " + std::to_string(readPulse), "pulse");
     }
     else if (readPulse > PULSE_ALARM_VALS[4].first) {
-      setStatus(PULSE_ALARM_VALS[4].second, "Pulse is potentially too high", "pulse");
+      setStatus(PULSE_ALARM_VALS[4].second, "Pulse is potentially too high: " + std::to_string(readPulse), "pulse");
     }
     else {
       setStatus("none", "Everything is normal", "pulse");
@@ -205,15 +205,21 @@ void Monitor::missedOxygenRead() {
   }
 }
 
+std::string oxygenToString(double oxygen) {
+  std::stringstream converter;
+  converter << std::fixed << std::setprecision(1) << oxygen;
+  return converter.str();
+}
+
 void Monitor::setOxygenLevel(double oxygenAverage) {
   if(oxygenAverage < OXYGEN_ALARM_VALS[0].first) {
-    setStatus(OXYGEN_ALARM_VALS[0].second, "Oxygen is life threatingly low!", "oxygen");
+    setStatus(OXYGEN_ALARM_VALS[0].second, "Oxygen is life threateningly low: " + oxygenToString(oxygenAverage), "oxygen");
   }
   else if(oxygenAverage < OXYGEN_ALARM_VALS[1].first) {
-    setStatus(OXYGEN_ALARM_VALS[1].second, "Oxygen is dangerously low!", "oxygen");
+    setStatus(OXYGEN_ALARM_VALS[1].second, "Oxygen is dangerously low: " + oxygenToString(oxygenAverage), "oxygen");
   }
   else if (oxygenAverage < OXYGEN_ALARM_VALS[2].first) {
-    setStatus(OXYGEN_ALARM_VALS[2].second, "Oxygen is potentially too low", "oxygen");
+    setStatus(OXYGEN_ALARM_VALS[2].second, "Oxygen is potentially too low: " + oxygenToString(oxygenAverage), "oxygen");
   }
   else {
     setStatus("none", "Everything is normal", "oxygen");
@@ -242,23 +248,23 @@ void Monitor::checkOxygen(double readOxygen) {
   }
 }
 
+std::string bpToString(std::pair<int, int> bp) {
+  return std::to_string(bp.first) + "/" + std::to_string(bp.second);
+}
+
 void Monitor::checkBp(std::pair<int, int> readBp) {
-  if (readBp.first < BP_MAX.first && readBp.second < BP_MAX.second) {
+  if ((readBp.first < BP_MAX.first && readBp.second < BP_MAX.second) && (readBp.first >= 0 && readBp.second >= 0)) {
     if (readBp.first < BP_ALARM_VALS[0].first.first || readBp.second < BP_ALARM_VALS[0].first.second) {
-      setStatus(BP_ALARM_VALS[0].second, "BP is life threatingly low!", "bp");
-      bpAlarm = true;
+      setStatus(BP_ALARM_VALS[0].second, "BP is life threateningly low: " + bpToString(readBp),  "bp");
     }
     else if ((readBp.first > BP_ALARM_VALS[1].first.first || readBp.second > BP_ALARM_VALS[1].first.second) && (readBp.first < BP_MAX.first || readBp.second < BP_MAX.second)) {
-      setStatus(BP_ALARM_VALS[1].second, "BP is dangerously high!", "bp");
-      bpAlarm = true;
+      setStatus(BP_ALARM_VALS[1].second, "BP is dangerously high: " + bpToString(readBp), "bp");
     }
     else if (readBp.first < BP_ALARM_VALS[2].first.first || readBp.second < BP_ALARM_VALS[2].first.second) {
-      setStatus(BP_ALARM_VALS[2].second, "BP is dangerously low!", "bp");
-      bpAlarm = true;
+      setStatus(BP_ALARM_VALS[2].second, "BP is dangerously low: " + bpToString(readBp), "bp");
     }
     else if (readBp.first > BP_ALARM_VALS[3].first.first || readBp.second > BP_ALARM_VALS[3].first.second) {
-      setStatus(BP_ALARM_VALS[3].second, "BP is potentially too high", "bp");
-      bpAlarm = true;
+      setStatus(BP_ALARM_VALS[3].second, "BP is potentially too high: " + bpToString(readBp), "bp");
     }
     else {
       setStatus("none", "Everything is normal", "bp");
@@ -266,7 +272,6 @@ void Monitor::checkBp(std::pair<int, int> readBp) {
   }
   else {
     setStatus("low", "Equipment malfunction", "bp");
-    bpAlarm = true;
   }
 }
 

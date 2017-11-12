@@ -18,10 +18,6 @@
 # Expect "medium" status and message of "Pulse is dangerously low!"
 #
 20 90.0 120/80
-# Test 4, between 20 and 40 threshold
-# Expect "medium" status and message of "Pulse is dangerously low!"
-#
-30 90.0 120/80
 # Test 5, below 40 threshold
 # Expect "medium" status and message of "Pulse is dangerously low!"
 #
@@ -30,38 +26,30 @@
 # Expect "none" status and message of "Everything is normal"
 #
 40 90.0 120/80
-# Test 7, already tested between 40 and 110 with happy path, so test below 110
+# Test 7, test at 110
 # Expect "none" status and message of "Everything is normal"
 #
-109 90.0 120/80
-# Test 8, at 110 threshold
-# Expect "low" status and message of "Pulse is potentially high"
-#
 110 90.0 120/80
-# Test 9, between 110 and 130
+# Test 8, above 110 threshold
 # Expect "low" status and message of "Pulse is potentially high"
 #
-120 90.0 120/80
-# Test 10, under 130 threshold
+111 90.0 120/80
+# Test 10, at 130 threshold
 # Expect "low" status and message of "Pulse is potentially high"
-#
-129 90.0 120/80
-# Test 11, at 130 threshold
-# Expect "medium" status and message of "Pulse is dangerously high!"
 #
 130 90.0 120/80
-# Test 12, at between 130 and 170 threshold
+# Test 11, above 130 threshold
 # Expect "medium" status and message of "Pulse is dangerously high!"
 #
-150 90.0 120/80
-# Test 13, under 170 threshold
+131 90.0 120/80
+# Test 13, at 170 threshold
 # Expect "medium" status and message of "Pulse is dangerously high!"
-#
-169 90.0 120/80
-# Test 14, at 170 threshold
-# Expect "high" status and message of "Pulse is life threateningly high"
 #
 170 90.0 120/80
+# Test 14, above 170 threshold
+# Expect "high" status and message of "Pulse is life threateningly high"
+#
+171 90.0 120/80
 # Test 15, above 170 threshold
 # Expect "high" status and message of "Pulse is life threateningly high"
 #
@@ -166,4 +154,76 @@
 80 120/80
 # 3, we should see the "low" alarm here
 80 120/80
-80 20 120/80
+##################################################################
+##################################################################
+##### Blood pressure testing ahead ###############################
+##################################################################
+##################################################################
+# Test 30, systolic is at 150
+# Expect "none" status and message of "Everything is normal"
+#
+80 90.0 150/80
+# Test 31, systolic is above 150
+# Expect "low" status and message of "BP is potentially too high"
+#
+80 90.0 151/80
+# Test 32, diastolic is at 90
+# Expect "none" status and message of "Everything is normal"
+#
+80 90.0 120/90
+# Test 33, diastolic is above 90
+# Expect "low" status and message of "BP is potentially too high"
+#
+80 90.0 120/91
+# Test 34, systolic is at 200
+# Expect "low" status and message of "BP is potentially too high"
+#
+80 90.0 200/80
+# Test 35, systolic is above 200
+# Expect "medium" status and message of "BP is dangerously high"
+#
+80 90.0 201/80
+# Test 36, diastolic is at 120
+# Expect "low" status and message of "BP is potentially too high"
+#
+80 90.0 120/120
+# Test 37, diastolic is above 120
+# Expect "medium" status and message of "BP is dangerously high"
+#
+80 90.0 120/121
+# Test 38, systolic is at 70
+# Expect "none" status and message of "Everything is normal"
+#
+80 90.0 70/80
+# Test 39, systolic is under 70
+# Expect "medium" status and message of "BP is dangerously low"
+#
+80 90.0 69/80
+# Test 40, diastolic is at 40
+# Expect "none" status and message of "Everything is normal"
+#
+80 90.0 120/40
+# Test 41, diastolic is under 40
+# Expect "medium" status and message of "BP is dangerously low"
+#
+80 90.0 120/39
+# Test 42, systolic is at 50
+# Expect "medium" status and message of "BP is dangerously low"
+#
+80 90.0 50/80
+# Test 43, systolic is under 50
+# Expect "high" status and message of "BP is life threateningly low"
+#
+80 90.0 49/80
+# Test 44, diastolic is under 33
+# Expect "high" status and message of "BP is life threateningly low"
+#
+80 90.0 120/32
+# Test 45, diastolic is at 33
+# Expect "medium" status and message of "BP is dangerously low"
+#
+80 90.0 120/33
+# Test 45, diastolic is at 33
+# Expect "medium" status and message of "BP is dangerously low"
+#
+80 90.0 120/33
