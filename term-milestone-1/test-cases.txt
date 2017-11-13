@@ -18,55 +18,55 @@
 # Expect "medium" status and message of "Pulse is dangerously low!"
 #
 20 90.0 120/80
-# Test 5, below 40 threshold
+# Test 4, below 40 threshold
 # Expect "medium" status and message of "Pulse is dangerously low!"
 #
 39 90.0 120/80
-# Test 6, at 40 threshold
+# Test 5, at 40 threshold
 # Expect "none" status and message of "Everything is normal"
 #
 40 90.0 120/80
-# Test 7, test at 110
+# Test 6, test at 110
 # Expect "none" status and message of "Everything is normal"
 #
 110 90.0 120/80
-# Test 8, above 110 threshold
+# Test 7, above 110 threshold
 # Expect "low" status and message of "Pulse is potentially high"
 #
 111 90.0 120/80
-# Test 10, at 130 threshold
+# Test 8, at 130 threshold
 # Expect "low" status and message of "Pulse is potentially high"
 #
 130 90.0 120/80
-# Test 11, above 130 threshold
+# Test 9, above 130 threshold
 # Expect "medium" status and message of "Pulse is dangerously high!"
 #
 131 90.0 120/80
-# Test 13, at 170 threshold
+# Test 10, at 170 threshold
 # Expect "medium" status and message of "Pulse is dangerously high!"
 #
 170 90.0 120/80
-# Test 14, above 170 threshold
+# Test 11, above 170 threshold
 # Expect "high" status and message of "Pulse is life threateningly high"
 #
 171 90.0 120/80
-# Test 15, above 170 threshold
+# Test 12, above 170 threshold
 # Expect "high" status and message of "Pulse is life threateningly high"
 #
 171 90.0 120/80
-# Test 16, at max threshold
+# Test 13, at max threshold
 # Expect "high" status and message of "Pulse is life threateningly high"
 #
 210 90.0 120/80
-# Test 17, above max threshold
+# Test 14, above max threshold
 # Expect "low" status and message of "Equipment malfunction"
 #
 211 90.0 120/80
-# Test 18, at min threshold
+# Test 15, at min threshold
 # Expect "high" status and message of "Pulse is life threateningly low"
 #
 0 90.0 120/80
-# Test 19, below min threshold
+# Test 16, below min threshold
 # Expect "low" status and message of "Equipment malfunction"
 #
 -1 90.0 120/80
@@ -77,7 +77,7 @@
 ##################################################################
 #
 #
-# Test 20, test average happy path
+# Test 17, test average happy path
 # First, have to get past 60 seconds to get a good average
 # Expect "none" status and message of "Everything is normal"
 80 90.0 120/80
@@ -86,23 +86,23 @@
 80 90.0 120/80
 80 90.0 120/80
 80 90.0 120/80
-# Test 21, test average at 85%
+# Test 18, test average at 85%
 # Expect "none" status and message of "Everything is normal"
 #
 80 60 120/80
-# Test 22, test average below 85%
+# Test 19, test average below 85%
 # Expect "low" status and message of "Oxygen is potentially too low"
 #
 80 89 120/80
-# Test 23, test average at 80%
+# Test 20, test average at 80%
 # Expect "low" status and message of "Oxygen is potentially too low"
 #
 80 61 120/80
-# Test 24, test average below 80%
+# Test 21, test average below 80%
 # Expect "medium" status and message of "Oxygen is dangerously low!"
 #
 80 89 120/80
-# Test 25, test average at 50%
+# Test 22, test average at 50%
 # Expect "medium" status and message of "Oxygen is dangerously low!"
 # Have to input 2 values to get the average that low so disregard next line
 #
@@ -110,7 +110,7 @@
 # This line is the result we want
 #
 80 1 120/80
-# Test 26, test average below 50%
+# Test 23, test average below 50%
 # Expect "high" status and message of "Oxygen is life threateningly low!"
 #
 80 59 120/80
@@ -133,15 +133,15 @@
 ###### Therefore oxygen average will start to print out 'nan' ####
 ##################################################################
 ##################################################################
-# Test 27, test oxygen below min
+# Test 24, test oxygen below min
 # Expect "low" status and message of "Equipment malfunction"
 #
 80 -1 120/80
-# Test 28, test oxygen above max
+# Test 25, test oxygen above max
 # Expect "low" status and message of "Equipment malfunction"
 #
 80 101 120/80
-# Test 29
+# Test 26
 # Expect "low" status and message of "Equipment malfunction"
 # Have to have at least 1 valid read in to test 3 missed reads
 # Ignore
@@ -159,71 +159,118 @@
 ##### Blood pressure testing ahead ###############################
 ##################################################################
 ##################################################################
-# Test 30, systolic is at 150
+# Test 27, systolic is at 150
 # Expect "none" status and message of "Everything is normal"
 #
 80 90.0 150/80
-# Test 31, systolic is above 150
+# Test 28, systolic is above 150
 # Expect "low" status and message of "BP is potentially too high"
 #
 80 90.0 151/80
-# Test 32, diastolic is at 90
+# Test 29, diastolic is at 90
 # Expect "none" status and message of "Everything is normal"
 #
 80 90.0 120/90
-# Test 33, diastolic is above 90
+# Test 30, diastolic is above 90
 # Expect "low" status and message of "BP is potentially too high"
 #
 80 90.0 120/91
-# Test 34, systolic is at 200
+# Test 31, systolic is at 200
 # Expect "low" status and message of "BP is potentially too high"
 #
 80 90.0 200/80
-# Test 35, systolic is above 200
+# Test 32, systolic is above 200
 # Expect "medium" status and message of "BP is dangerously high"
 #
 80 90.0 201/80
-# Test 36, diastolic is at 120
+# Test 33, diastolic is at 120
 # Expect "low" status and message of "BP is potentially too high"
 #
 80 90.0 120/120
-# Test 37, diastolic is above 120
+# Test 34, diastolic is above 120
 # Expect "medium" status and message of "BP is dangerously high"
 #
 80 90.0 120/121
-# Test 38, systolic is at 70
+# Test 35, systolic is at 70
 # Expect "none" status and message of "Everything is normal"
 #
 80 90.0 70/80
-# Test 39, systolic is under 70
+# Test 36, systolic is under 70
 # Expect "medium" status and message of "BP is dangerously low"
 #
 80 90.0 69/80
-# Test 40, diastolic is at 40
+# Test 37, diastolic is at 40
 # Expect "none" status and message of "Everything is normal"
 #
 80 90.0 120/40
-# Test 41, diastolic is under 40
+# Test 38, diastolic is under 40
 # Expect "medium" status and message of "BP is dangerously low"
 #
 80 90.0 120/39
-# Test 42, systolic is at 50
+# Test 39, systolic is at 50
 # Expect "medium" status and message of "BP is dangerously low"
 #
 80 90.0 50/80
-# Test 43, systolic is under 50
+# Test 40, systolic is under 50
 # Expect "high" status and message of "BP is life threateningly low"
 #
 80 90.0 49/80
-# Test 44, diastolic is under 33
+# Test 41, systolic is above max
+# Expect "low" status and message of "equipment failure"
+#
+80 90.0 231/80
+# Test 42, diastolic is at 33
+# Expect "medium" status and message of "BP is dangerously low"
+#
+80 90.0 120/33
+# Test 43, diastolic is under 33
 # Expect "high" status and message of "BP is life threateningly low"
 #
 80 90.0 120/32
-# Test 45, diastolic is at 33
-# Expect "medium" status and message of "BP is dangerously low"
+# Test 44, diastolic is above max
+# Expect "low" status and message of "Equipment failure"
 #
-80 90.0 120/33
-# Test 45, diastolic is at 33
-# Expect "medium" status and message of "BP is dangerously low"
+80 90.0 120/151
+##################################################################
+##################################################################
+##### Testing number of values ahead #############################
+##################################################################
+##################################################################
+80 90.0 120/80
+# Test 45, 2 values: Pulse, oxygen
+# Expect "none" status and message of "Everything is normal"
 #
-80 90.0 120/33
+80 90.0
+# Test 45, 2 values: Pulse, blood pressure
+# Expect "none" status and message of "Everything is normal"
+#
+80 120/80
+# Test 46, 1 value: pulse
+# Expect "none" status and message of "Everything is normal"
+#
+80
+##################################################################
+##################################################################
+##### Testing multiple errors at once ############################
+##################################################################
+##################################################################
+# Test 47, high pulse error, low oxygen, low bp
+# Expect "high" status and message of "Pulse is life threateningly low"
+#
+19 0 120/80
+# Test 48, low pulse error, medium oxygen, low bp
+# Expect "high" status and message of "Oxygen is life dangerously low"
+#
+111 0 120/80
+# Test 49, low pulse error, high oxygen, low bp
+# Expect "high" status and message of "Oxygen is life threateningly low"
+#
+111 0 120/80
+# Test 50, medium pulse error, low oxygen, low bp
+# Expect "high" status and message of "Oxygen is life threateningly low"
+#
+131 99 120/80
+131 99 120/80
+131 99 120/80
+131 99 120/80
+131 99 120/80

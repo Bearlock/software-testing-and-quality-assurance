@@ -87,55 +87,16 @@ void Monitor::setStatus(std::string alertLevel, std::string desc, std::string so
   }
   else {
     if (source == "pulse") {
-      if(alertLevel == "high") {
         pulseAlarm = true;
         warnings[0] = std::make_pair(alertLevel, desc);
-      }
-      else if(alertLevel == "medium" && warnings[0].first != "high")
-      {
-        pulseAlarm = true;
-        warnings[0] = std::make_pair(alertLevel, desc);
-      }
-      else {
-        if (warnings[0].first != "high" || warnings[0].first != "medium") {
-          pulseAlarm = true;
-          warnings[0] = std::make_pair(alertLevel, desc);
-        }
-      }
     }
     else if (source == "oxygen") {
-      if(alertLevel == "high") {
         oxygenAlarm = true;
         warnings[1] = std::make_pair(alertLevel, desc);
-      }
-      else if(alertLevel == "medium" && warnings[1].first != "high")
-      {
-        oxygenAlarm = true;
-        warnings[1] = std::make_pair(alertLevel, desc);
-      }
-      else {
-        if (warnings[1].first != "high" || warnings[1].first != "medium") {
-          oxygenAlarm = true;
-          warnings[1] = std::make_pair(alertLevel, desc);
-        }
-      }
     }
     else {
-      if(alertLevel == "high") {
         bpAlarm = true;
         warnings[2] = std::make_pair(alertLevel, desc);
-      }
-      else if(alertLevel == "medium" && warnings[2].first != "high")
-      {
-        bpAlarm = true;
-        warnings[2] = std::make_pair(alertLevel, desc);
-      }
-      else {
-        if (warnings[2].first != "high" || warnings[2].first != "medium") {
-          bpAlarm = true;
-          warnings[2] = std::make_pair(alertLevel, desc);
-        }
-      }
     }
   }
 
@@ -154,6 +115,7 @@ void Monitor::setStatus(std::string alertLevel, std::string desc, std::string so
         description = warnings[i].second;
       }
     }
+    previousSource = source;
   }
   else {
     currentStatus = "none";
@@ -257,11 +219,11 @@ void Monitor::checkBp(std::pair<int, int> readBp) {
     if (readBp.first < BP_ALARM_VALS[0].first.first || readBp.second < BP_ALARM_VALS[0].first.second) {
       setStatus(BP_ALARM_VALS[0].second, "BP is life threateningly low: " + bpToString(readBp),  "bp");
     }
-    else if ((readBp.first > BP_ALARM_VALS[1].first.first || readBp.second > BP_ALARM_VALS[1].first.second) && (readBp.first < BP_MAX.first || readBp.second < BP_MAX.second)) {
-      setStatus(BP_ALARM_VALS[1].second, "BP is dangerously high: " + bpToString(readBp), "bp");
-    }
     else if (readBp.first < BP_ALARM_VALS[2].first.first || readBp.second < BP_ALARM_VALS[2].first.second) {
       setStatus(BP_ALARM_VALS[2].second, "BP is dangerously low: " + bpToString(readBp), "bp");
+    }
+    else if ((readBp.first > BP_ALARM_VALS[1].first.first || readBp.second > BP_ALARM_VALS[1].first.second)) {
+      setStatus(BP_ALARM_VALS[1].second, "BP is dangerously high: " + bpToString(readBp), "bp");
     }
     else if (readBp.first > BP_ALARM_VALS[3].first.first || readBp.second > BP_ALARM_VALS[3].first.second) {
       setStatus(BP_ALARM_VALS[3].second, "BP is potentially too high: " + bpToString(readBp), "bp");

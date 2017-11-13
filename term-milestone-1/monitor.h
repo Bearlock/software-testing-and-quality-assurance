@@ -40,6 +40,7 @@ class Monitor {
     std::string description;
     std::string currentStatus;
     std::string previousStatus;
+    std::string previousSource;
     std::deque<double> oxygenReads;
     std::array<std::pair<std::string, std::string>, 3> warnings;
 
